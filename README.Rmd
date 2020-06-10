@@ -97,7 +97,7 @@ for the last two reporting periods (`periods_tail = 2`).
 
 The example in the manual (`?xstatic`) is a much smaller one.
 
-``` r
+```{r}
 library(xstatic)
 
 something <- xstatic_slurp(
@@ -152,7 +152,7 @@ something <- xstatic_slurp(
   chatty = TRUE
 )
 
-glimpse::glimpse(something)
+dplyr::glimpse(something)
 
 ```
 
@@ -178,7 +178,12 @@ This works for `filter_level` and `return_level` in the `xstatic_slurp` script.
 *NB this is designed to work with DR Kane's lookup table or anything else that uses the same area codes as variable names/colnames. If you're supplying a different lookup table these may well break.* You can turn this aliasing behaviour off by passing `use_aliases = FALSE`.
 
 ```{r}
-geo_levels <- tibble(
+
+use_aliases <- TRUE
+return_level <- "LSOA"
+filter_level <- "upper"
+
+geo_levels <- dplyr::tibble(
   aliases = c(
     "country",
     "region",
@@ -197,11 +202,11 @@ geo_levels <- tibble(
 )
 
 if(use_aliases) {
-    return_level <- paste0(process_aliases(return_level), "cd")
+    return_level <- paste0(xstatic:::process_aliases(return_level), "cd")
   }
   
 if(use_aliases) {
-    filter_level <- paste0(process_aliases(filter_level), "nm")
+    filter_level <- paste0(xstatic:::process_aliases(filter_level), "nm")
   }
   
 ```

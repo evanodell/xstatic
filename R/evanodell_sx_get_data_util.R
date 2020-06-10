@@ -31,4 +31,3 @@ sx_get_data_util <- function(query, body_query) {
 
   fromJSON(httr::content(api_get, as = "text"), flatten = TRUE)
 }
-

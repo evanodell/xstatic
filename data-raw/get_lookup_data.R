@@ -61,27 +61,28 @@
 
 get_lookup <- function(overwrite = FALSE, chatty = TRUE) {
 
-    # geo lookups to help get area codes
-    drkane_url <- "https://github.com/drkane/geo-lookups/raw/master/lsoa_la.csv"
+  # geo lookups to help get area codes
+  drkane_url <- "https://github.com/drkane/geo-lookups/raw/master/lsoa_la.csv"
 
-    if(chatty) {
-      ui_info(paste("Using DR Kane's lookup from GitHub", drkane_url))
-    }
+  if (chatty) {
+    ui_info(paste("Using DR Kane's lookup from GitHub", drkane_url))
+  }
 
-    destfile <- basename(drkane_url)
+  destfile <- basename(drkane_url)
 
-    # check to see if the file already exists
-    if(!file.exists(destfile) || overwrite) {
-      utils::download.file(url, destfile, quiet = TRUE)
-    }
-    else {
-      ui_info(
-        paste(
-          "File",
-          destfile,
-          "already existed, so that was used instead of re-downloading. Pass `overwrite = TRUE` to overwrite the existing file with a fresh download.")
+  # check to see if the file already exists
+  if (!file.exists(destfile) || overwrite) {
+    utils::download.file(url, destfile, quiet = TRUE)
+  }
+  else {
+    ui_info(
+      paste(
+        "File",
+        destfile,
+        "already existed, so that was used instead of re-downloading. Pass `overwrite = TRUE` to overwrite the existing file with a fresh download."
       )
-    }
+    )
+  }
 
   readr::read_csv(destfile) %>%
     janitor::clean_names()

@@ -7,25 +7,28 @@ geo_levels <- tibble(
     "upper",
     "local|lad",
     "middle|msoa",
-    "lower|lsoa"),
+    "lower|lsoa"
+  ),
   returns = c(
     "ctry",
     "rgn",
     "utla",
     "lad20",
     "msoa11",
-    "lsoa11"),
+    "lsoa11"
+  ),
   geo_level = c(7:2)
 )
 
 process_aliases <- function(input) {
-
   process_string <- function(string, x, y) {
     string <- tolower(string)
-    if(str_detect(string, x)) {
+    if (str_detect(string, x)) {
       string <- y
     }
-    else { string <- "" }
+    else {
+      string <- ""
+    }
     return(string)
   }
 
@@ -34,33 +37,31 @@ process_aliases <- function(input) {
 }
 
 extract_area_codes <- function(df, filter_level, filter_area, return_level, use_aliases, chatty = TRUE) {
-
-  if(use_aliases) {
+  if (use_aliases) {
     return_level <- paste0(process_aliases(return_level), "cd")
   }
   assert_that(is.character(return_level))
 
-  if(filter_level == "") {
+  if (filter_level == "") {
     area_codes <- df %>%
       # pull(.data$return_level) %>% # I don't think I need .data here?
       pull(return_level) %>%
-      unique
-    if(chatty) {
+      unique()
+    if (chatty) {
       ui_info("Extracting area codes from lookup table.")
       ui_info("No filter by location.")
       ui_info(paste("Extracting codes at", return_level, "level"))
     }
   } else {
-
     assert_that(is.character(filter_level))
     assert_that(is.character(filter_area))
 
-    if(use_aliases) {
+    if (use_aliases) {
       filter_level <- paste0(process_aliases(filter_level), "nm")
     }
 
 
-    if(chatty) {
+    if (chatty) {
       ui_info("Extracting area codes from lookup table.")
       ui_info(paste("Filtering lookup at level", filter_level))
       ui_info(paste("Selecting only data within", filter_area))
@@ -71,12 +72,12 @@ extract_area_codes <- function(df, filter_level, filter_area, return_level, use_
     filter_level <- ensym(filter_level)
 
     area_codes <- df %>%
-      filter(str_detect( {{filter_level}}, filter_area )) %>%
+      filter(str_detect({{ filter_level }}, filter_area)) %>%
       pull(return_level) %>%
-      unique
+      unique()
   }
 
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Returning", length(area_codes), "area codes"))
     ui_info(paste("Sample codes:", str_c(head(area_codes, 3), sep = ",")))
   }
@@ -85,8 +86,7 @@ extract_area_codes <- function(df, filter_level, filter_area, return_level, use_
 }
 
 get_area_codes <- function(
-  filter_level, filter_area, return_level, use_aliases = TRUE, chatty = TRUE, ...) {
-
+                           filter_level, filter_area, return_level, use_aliases = TRUE, chatty = TRUE, ...) {
   assert_that(is.data.frame(lookup))
   codes <- lookup %>% extract_area_codes(., filter_level, filter_area, return_level, use_aliases = use_aliases, chatty = chatty)
 }
@@ -120,13 +120,12 @@ get_area_codes <- function(
 # as a function
 
 make_batched_list <- function(x, batch_size = 1000) {
-
-  if(is.list(x)) {
+  if (is.list(x)) {
     x <- unlist(x)
   }
   assert_that(is.vector(x))
 
-  rep(1:ceiling(length(x)/batch_size), each = batch_size) %>%
+  rep(1:ceiling(length(x) / batch_size), each = batch_size) %>%
     head(length(x)) %>%
     split(x, .)
 }

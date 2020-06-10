@@ -13,4 +13,10 @@ test_that("slurping works", {
     chatty = TRUE
   )
 
+  expect_s3_class(something, "tbl_df")
+  expect_equal(names(something), c("lsoa11cd",  "lsoa11nm",
+                                   "data_date" ,"universal"))
+  expect_true("E01014091" %in% something$lsoa11cd)
+  expect_true(all(grepl("Herefordshire", something$lsoa11nm)))
+
 })

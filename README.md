@@ -1,44 +1,66 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # xstatic
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/francisbarton/xstatic.svg?branch=master)](https://travis-ci.org/francisbarton/xstatic)
+
+[![Travis build
+status](https://travis-ci.org/francisbarton/xstatic.svg?branch=master)](https://travis-ci.org/francisbarton/xstatic)
 <!-- badges: end -->
 
 The goal of `xstatic` is to make the user happy.
 
-The [Stat-Xplore](https://stat-xplore.dwp.gov.uk/) interface rarely makes people happy.
-But things are going to change around here.
+The [Stat-Xplore](https://stat-xplore.dwp.gov.uk/) interface rarely
+makes people happy. But things are going to change around here.
 
 ## Summary
 
-I wanted to build a script that would enable me to easily retrieve benefit claims data at various geographic levels across England (and possibly Wales, Scotland and Northern Ireland also), without having to go the Stat-Xplore website and download a csv or a JSON query.
+I wanted to build a script that would enable me to easily retrieve
+benefit claims data at various geographic levels across England (and
+possibly Wales, Scotland and Northern Ireland also), without having to
+go the Stat-Xplore website and download a csv or a JSON query.
 
-And to allow easy updating, including programmatically or automatically, from within R.
+And to allow easy updating, including programmatically or automatically,
+from within R.
 
-I'm usually only interested in getting data for certain benefits at geographic areas eg Census areas, not by Job Centre, and not using multiple filters or wafers or whatever.
+I’m usually only interested in getting data for certain benefits at
+geographic areas eg Census areas, not by Job Centre, and not using
+multiple filters or wafers or whatever.
 
 So this gives me the ability to do that, within its limitations.
 
 Tips of my proverbial hat to
 
-* [Evan Odell](https://github.com/dr-uk/dwpstat),
-* [Oli Hawkins](https://github.com/olihawkins/statxplorer) and
-* [David Millson](https://github.com/davidmillson/stat-xplore-R)
+  - [Evan Odell](https://github.com/dr-uk/dwpstat),
+  - [Oli Hawkins](https://github.com/olihawkins/statxplorer) and
+  - [David Millson](https://github.com/davidmillson/stat-xplore-R)
 
-for their prior work on this issue.
-There may be others with similar work I'm not yet aware of.
+for their prior work on this issue. There may be others with similar
+work I’m not yet aware of.
 
-This package relies at its core on Evan's `dwp_schema` and `sx_get_data_util` functions, and in a sense should be thought of as a wrapper for his work with additional bells and whistles.
+This package relies at its core on Evan’s `dwp_schema` and
+`sx_get_data_util` functions, and in a sense should be thought of as a
+wrapper for his work with additional bells and whistles.
 
-The package also provides, and by default uses, one of [David Kane](https://twitter.com/kanedr)'s [UK geographic lookup tables](https://github.com/drkane/geo-lookups/) - very useful to have all that in one file!
-The data included in that file is sourced from the [ONS Geoportal](http://geoportal.statistics.gov.uk/) and contains public sector information licensed under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
+The package also provides, and by default uses, one of [David
+Kane](https://twitter.com/kanedr)’s [UK geographic lookup
+tables](https://github.com/drkane/geo-lookups/) - very useful to have
+all that in one file\! The data included in that file is sourced from
+the [ONS Geoportal](http://geoportal.statistics.gov.uk/) and contains
+public sector information licensed under the [Open Government Licence
+v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
 
-You can instead feed your own alternative lookup file to the script, either as a URL that sends a CSV or JSON return or as a local file.
+You can instead feed your own alternative lookup file to the script,
+either as a URL that sends a CSV or JSON return or as a local file.
 
-Earlier attempts at this were built and used as part of digital inclusion projects working for my employer [Citizens Online](https://www.citizensonline.org.uk).
+Earlier attempts at this were built and used as part of digital
+inclusion projects working for my employer [Citizens
+Online](https://www.citizensonline.org.uk).
 
-I'm not sure how useful it is to anyone else but as always it has been a good learning experience and adventure in using `R` to do this kind of thing.
+I’m not sure how useful it is to anyone else but as always it has been a
+good learning experience and adventure in using `R` to do this kind of
+thing.
 
 ## Installation
 
@@ -46,39 +68,46 @@ This should work:
 
 ``` r
 remotes::install_github("francisbarton/xstatic")
-
 ```
 
 ## Limitations
 
-There are many!
+There are many\!
 
-Please let me know ideas for things I have missed,
-things I could have done more efficiently, or
-things you would like to see.
+Please let me know ideas for things I have missed, things I could have
+done more efficiently, or things you would like to see.
 
-The whole thing is built around `tidyverse` functions and things like `jsonlite::fromJSON` and `janitor::clean_names`.
-I suppose ideally I should have built it more around base functions, but I like the tidyverse approach,
-so that's what you get.
-If I'm honest I live in the tidyverse and I don't really know how to make things work in base R any more.
+The whole thing is built around `tidyverse` functions and things like
+`jsonlite::fromJSON` and `janitor::clean_names`. I suppose ideally I
+should have built it more around base functions, but I like the
+tidyverse approach, so that’s what you get. If I’m honest I live in the
+tidyverse and I don’t really know how to make things work in base R any
+more.
 
-The script involves building a JSON query programatically, which is a super-fragile process.
+The script involves building a JSON query programatically, which is a
+super-fragile process.
 
-Please give it a try but be gentle, it is a delicate beast.
-Let me know what breaks.
+Please give it a try but be gentle, it is a delicate beast. Let me know
+what breaks.
 
-Pull requests are welcomed and of course it's all MIT-licensed open code so fork away.
+Pull requests are welcomed and of course it’s all MIT-licensed open code
+so fork away.
 
-* Currently the script is set up to get totals for a variety of geographic areas.
-Not to get data segmented by age, gender, claimant status etc, because that is beyond what I need currently.
-And it was already complicated enough...
-* There's a load of hacks in there to accommodate places where the schema uses different table structures for different benefits (see "exception hacks" in `get_dwp_codes.R`)
-* I was too lazy to include Travel to Work zones as an area filter in my area codes script but I don't think Stat-Xplore provides data at those levels anyway?
+  - Currently the script is set up to get totals for a variety of
+    geographic areas. Not to get data segmented by age, gender, claimant
+    status etc, because that is beyond what I need currently. And it was
+    already complicated enough…
+  - There’s a load of hacks in there to accommodate places where the
+    schema uses different table structures for different benefits (see
+    “exception hacks” in `get_dwp_codes.R`)
+  - I was too lazy to include Travel to Work zones as an area filter in
+    my area codes script but I don’t think Stat-Xplore provides data at
+    those levels anyway?
 
 ## Example
 
-Just one example here so far.
-This gets Universal Credit claims by LSOA level in the county (an upper tier local authority) of Herefordshire,
+Just one example here so far. This gets Universal Credit claims by LSOA
+level in the county (an upper tier local authority) of Herefordshire,
 for the last two reporting periods (`periods_tail = 2`).
 
 The example in the manual (`?xstatic`) is a much smaller one.
@@ -137,34 +166,87 @@ something <- xstatic_slurp(
   # Will probably switch the default to FALSE at some point.
   chatty = TRUE
 )
+#> ℹ No list of area codes provided. Using a lookup instead.
+#> ℹ Extracting area codes from lookup table.
+#> ℹ Filtering lookup at level utlanm
+#> ℹ Selecting only data within Herefordshire
+#> ℹ Extracting codes at lsoa11cd level
+#> ℹ Returning 116 area codes
+#> ℹ Sample codes: E01013988
+#>   Sample codes: E01014005
+#>   Sample codes: E01014035
+#> ℹ 116 area codes retrieved and batched into a list of 1 batches, of max batch size 1000
+#> ℹ Dataset is: Universal Credit
+#> ℹ Folder name is: str:folder:fuc
+#> ℹ Choosing default option: ds=3
+#> ℹ All options:
+#>   1: Claims made to Universal Credit
+#>   2: Households on Universal Credit
+#>   3: People on Universal Credit
+#>   4: Starts to Universal Credit
+#> ℹ Data subset name is: People on Universal Credit
+#> ℹ Data subset id is: str:database:UC_Monthly
+#> ℹ Available measures:
+#>   People on Universal Credit
+#>   Month
+#>   Geography (Jobcentre Plus)
+#>   Geography (residence-based)
+#>   Geography (postcode)
+#>   Age (bands and single year)
+#>   Conditionality Regime
+#>   Duration
+#>   Employment indicator
+#>   Gender
+#> ℹ Count id is: str:count:UC_Monthly:V_F_UC_CASELOAD_FULL
+#> ℹ Period id is: str:field:UC_Monthly:F_UC_DATE:DATE_NAME
+#> ℹ Latest period code: str:value:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE:202004
+#> ℹ Geography type id is: str:group:UC_Monthly:X_Geography+%28residence-based%29
+#> ℹ Geography field id is: str:field:UC_Monthly:V_F_UC_CASELOAD_FULL:COA_CODE
+#> ℹ Geography level id is: str:valueset:UC_Monthly:V_F_UC_CASELOAD_FULL:COA_CODE:V_C_MASTERGEOG11_LSOA_TO_MSOA
+#> ℹ Geography level is: Lower Layer Super Output Areas
+#> ℹ 232 rows of data at lsoa11 level retrieved.
 
-glimpse::glimpse(something)
-
+dplyr::glimpse(something)
+#> Rows: 232
+#> Columns: 4
+#> $ lsoa11cd  <chr> "E01013988", "E01014005", "E01014035", "E01014084", "E01014…
+#> $ lsoa11nm  <chr> "Herefordshire 011B", "Herefordshire 005F", "Herefordshire …
+#> $ data_date <chr> "202003", "202003", "202003", "202003", "202003", "202003",…
+#> $ universal <dbl> 31, 128, 80, 57, 34, 19, 59, 17, 17, 50, 121, 22, 24, 31, 3…
 ```
 
 ## Future plans
 
-* [x] write up documentation for core function
-* [x] make it into a valid R package
-* [ ] write up documentation for other functions
-* [ ] include `testthat` and more `assertthat` lines in the code. Still learning about these
-* [ ] increase coverage of the exception hacks in `get_dwp_codes.R`
-
+  - [x] write up documentation for core function
+  - [x] make it into a valid R package
+  - [ ] write up documentation for other functions
+  - [ ] include `testthat` and more `assertthat` lines in the code.
+    Still learning about these
+  - [ ] increase coverage of the exception hacks in `get_dwp_codes.R`
 
 ### List of area aliases
 
 From `get_area_codes.R`.
 
-Using any of the aliases in the first list below will be translated to the return string from the second list.
-Matching is not case-sensitive.
+Using any of the aliases in the first list below will be translated to
+the return string from the second list. Matching is not case-sensitive.
 Purely added in for informality/user-friendliness.
 
-This works for `filter_level` and `return_level` in the `xstatic_slurp` script.
+This works for `filter_level` and `return_level` in the `xstatic_slurp`
+script.
 
-*NB this is designed to work with DR Kane's lookup table or anything else that uses the same area codes as variable names/colnames. If you're supplying a different lookup table these may well break.* You can turn this aliasing behaviour off by passing `use_aliases = FALSE`.
+*NB this is designed to work with DR Kane’s lookup table or anything
+else that uses the same area codes as variable names/colnames. If you’re
+supplying a different lookup table these may well break.* You can turn
+this aliasing behaviour off by passing `use_aliases = FALSE`.
 
-```{r}
-geo_levels <- tibble(
+``` r
+
+use_aliases <- TRUE
+return_level <- "LSOA"
+filter_level <- "upper"
+
+geo_levels <- dplyr::tibble(
   aliases = c(
     "country",
     "region",
@@ -183,27 +265,34 @@ geo_levels <- tibble(
 )
 
 if(use_aliases) {
-    return_level <- paste0(process_aliases(return_level), "cd")
+    return_level <- paste0(xstatic:::process_aliases(return_level), "cd")
   }
   
 if(use_aliases) {
-    filter_level <- paste0(process_aliases(filter_level), "nm")
+    filter_level <- paste0(xstatic:::process_aliases(filter_level), "nm")
   }
   
 ```
 
 ## Code of Conduct
 
-Please note that the xstatic project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the xstatic project is released with a [Contributor
+Code of
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 ### Contact me
 
-You can email francis.barton@citizensonline.org.uk or ping me on twitter [@ludictech](https://twitter.com/ludictech)
+You can email <francis.barton@citizensonline.org.uk> or ping me on
+twitter \[@ludictech\](<https://twitter.com/ludictech>)
 
-Please [use](https://trinkerrstuff.wordpress.com/2013/08/31/github-package-ideas-i-stole/) issues on this repo to make suggestions or report problems or bugs.
+Please
+[use](https://trinkerrstuff.wordpress.com/2013/08/31/github-package-ideas-i-stole/)
+issues on this repo to make suggestions or report problems or bugs.
 
 ### Licence
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
-In the UK we spell it (the noun) 'licence', but anyway, this has an MIT *License*.
+In the UK we spell it (the noun) ‘licence’, but anyway, this has an MIT
+*License*.

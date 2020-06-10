@@ -10,11 +10,14 @@ build_recodes <- function(id_list, chunk, total = "false") {
   recode_paste <- function(x, y, ...) {
     str_c(
       str_c("\"", x, "\" : {"),
-      str_c("\"map\" : [ ",
-                     str_c(y, collapse = ","),
-            " ],"),
+      str_c(
+        "\"map\" : [ ",
+        str_c(y, collapse = ","),
+        " ],"
+      ),
       str_c("\"total\" : ", ...),
-      "}")
+      "}"
+    )
   }
 
   # sub-function
@@ -26,8 +29,10 @@ build_recodes <- function(id_list, chunk, total = "false") {
 
 
   # main function
-  map2_chr(id_list, chunk,
-           ~ create_recodes(field_id = .x, area_id = .y, total = total)) %>%
+  map2_chr(
+    id_list, chunk,
+    ~ create_recodes(field_id = .x, area_id = .y, total = total)
+  ) %>%
     str_c(collapse = ",") %>%
     str_c("\"recodes\" : {", ., "}")
 }
@@ -67,7 +72,8 @@ build_query <- function(build_list, geo_codes_chunk) {
     query_ms,
     recodes_section,
     query_dimensions,
-    sep = ",") %>%
+    sep = ","
+  ) %>%
     str_c(
       "{", ., "}"
     )
@@ -89,6 +95,6 @@ pull_sx_data <- function(df, dates) {
     select(-1) %>%
     mutate_at("uris", ~ str_replace(., "(.*:)([:alnum:]*$)", "\\2") %>% unlist()) %>%
     mutate_at("labels", ~ unlist(.)) %>%
-    map_dfc( ~ rep(., times = length(dates))) %>%
+    map_dfc(~ rep(., times = length(dates))) %>%
     bind_cols(values = c(pluck(df, "cubes", 1, "values")))
 }

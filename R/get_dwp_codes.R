@@ -1,13 +1,13 @@
 get_dwp_codes <- function(
-  ben = "",
-  ds = "",
-  period = 2,
-  periods_tail = 1,
-  periods_head = "",
-  geo_type = 4,
-  geo_field = 1,
-  geo_level = 3,
-  chatty = TRUE) {
+                          ben = "",
+                          ds = "",
+                          period = 2,
+                          periods_tail = 1,
+                          periods_head = "",
+                          geo_type = 4,
+                          geo_field = 1,
+                          geo_level = 3,
+                          chatty = TRUE) {
 
   # store a list of all datasets available from the StatX API
   bens_list <- dwpstat::dwp_schema() %>%
@@ -18,48 +18,52 @@ get_dwp_codes <- function(
 
   assert_that(is.character(ben), msg = "A single dataset name was not matched.")
 
-  if(chatty) {
+  if (chatty) {
     ui_info(paste0("Dataset is: ", ben))
   }
 
   # get folder id code
   folder <- sx_get_folder(ben)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste0("Folder name is: ", folder))
   }
 
   default <- "default "
-  if(!ds == "") { default <- "" }
+  if (!ds == "") {
+    default <- ""
+  }
 
   # exception hacks
   # add more to these lists as we discover them
   universal_type <- c("Universal Credit")
   housing_type <- c("Housing Benefit")
-  pension_type <- c("Pension Credit",
-                    "Employment and Support Allowance",
-                    "Carers Allowance")
+  pension_type <- c(
+    "Pension Credit",
+    "Employment and Support Allowance",
+    "Carers Allowance"
+  )
 
   if (ds == "" && ben %in% universal_type) {
-    ds = 3
+    ds <- 3
   }
   else if (ds == "") {
-    ds = 1
+    ds <- 1
   }
 
-  if(ben %in% housing_type) {
-    period = 4
-    geo_type = 6
+  if (ben %in% housing_type) {
+    period <- 4
+    geo_type <- 6
   }
 
-  if(ben %in% pension_type) {
-    period = 3
-    geo_type = 4
+  if (ben %in% pension_type) {
+    period <- 3
+    geo_type <- 4
   }
 
 
   # get chatty - show other options as well as the default
   db_options <- sx_pull_col("label", folder)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste0("Choosing ", default, "option: ds=", ds))
     ui_info(paste0("All options:\n\t", str_c(paste0(1:length(db_options), ": ", db_options), collapse = "\n\t")))
     ui_info(paste0("Data subset name is: ", db_options[ds]))
@@ -67,7 +71,7 @@ get_dwp_codes <- function(
 
   # report the options that are being used - for reference
   db_id <- sx_pull_id(ds, folder)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste0("Data subset id is: ", db_id))
   }
 
@@ -77,43 +81,42 @@ get_dwp_codes <- function(
   count_id <- dwpstat::dwp_schema(db_id) %>%
     filter(type == "COUNT") %>%
     pull(id)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Count id is:", count_id))
   }
 
   # period info: month or quarter and how many
   period_id <- sx_pull_id(period, db_id)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Period id is:", period_id))
   }
   periods <- sx_get_periods(period_id, tail = periods_tail, head = periods_head)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Latest period code:", tail(periods, 1)))
   }
 
   # geography info: check these look right for your query
   geo_type_id <- sx_pull_id(geo_type, db_id)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Geography type id is:", geo_type_id))
   }
   geo_field_id <- sx_pull_id(geo_field, geo_type_id)
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Geography field id is:", geo_field_id))
   }
 
   geo_level_id <- sx_pull_id(geo_level, geo_field_id)
   geo_level_label <- dwpstat::dwp_schema(geo_field_id) %>%
-      slice(geo_level) %>%
-      pull(label)
+    slice(geo_level) %>%
+    pull(label)
 
-  if(chatty) {
+  if (chatty) {
     ui_info(paste("Geography level id is:", geo_level_id))
     ui_info(paste("Geography level is:", geo_level_label))
   }
 
   # export list (info needed for construction of JSON API query)
-list(db_id = db_id, count_id = count_id, period_id = period_id, periods = periods, geo_field_id = geo_field_id, geo_level_id = geo_level_id)
-
+  list(db_id = db_id, count_id = count_id, period_id = period_id, periods = periods, geo_field_id = geo_field_id, geo_level_id = geo_level_id)
 }
 
 
@@ -146,7 +149,9 @@ sx_get_periods <- function(id, type = "VALUESET", ms = 1, tail = 1, head = "") {
 
   # if periods_head not specified then set it to same as periods_tail
   # so it has no effect
-  if (head == "") { head <- tail }
+  if (head == "") {
+    head <- tail
+  }
 
   dwpstat::dwp_schema(id) %>%
     filter(type == type) %>%
