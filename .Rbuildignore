@@ -6,3 +6,4 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
 R/olihawkins-request_table.R
+^README\.Rmd$

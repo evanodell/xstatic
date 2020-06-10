@@ -44,7 +44,10 @@
 
 utils::globalVariables(c("."))
 
-xstatic_slurp <- function(dataset_name, areas_list = "", filter_level = "", filter_area = ".*", return_level, area_code_lookup = "", use_aliases = TRUE, batch_size = 1000, chatty = TRUE, ...) {
+xstatic_slurp <- function(dataset_name, areas_list = "", filter_level = "",
+                          filter_area = ".*", return_level,
+                          area_code_lookup = "", use_aliases = TRUE,
+                          batch_size = 1000, chatty = TRUE, ...) {
 
   # source(here("R/slurp_helpers.R"))
 
@@ -55,7 +58,9 @@ xstatic_slurp <- function(dataset_name, areas_list = "", filter_level = "", filt
     # source(here("R/get_area_codes.R"))
 
     # make sure we've got a vector of area codes to work with -----------------
-    area_codes <- get_area_codes(filter_level, filter_area, return_level, lookup = area_code_lookup, use_aliases = use_aliases, chatty = chatty)
+    area_codes <- get_area_codes(filter_level, filter_area, return_level,
+                                 lookup = area_code_lookup,
+                                 use_aliases = use_aliases, chatty = chatty)
     areas_list <- make_batched_list(area_codes, batch_size = batch_size)
 
     # not sure I am doing this right
@@ -63,7 +68,10 @@ xstatic_slurp <- function(dataset_name, areas_list = "", filter_level = "", filt
     assert_that(length(areas_list) > 0)
 
     if(chatty) {
-      ui_info(paste(length(area_codes), "area codes retrieved and batched into a list of", length(areas_list), "batches, of max batch size", batch_size))
+      ui_info(paste(length(area_codes),
+                    "area codes retrieved and batched into a list of",
+                    length(areas_list), "batches, of max batch size",
+                    batch_size))
     }
   }
 
