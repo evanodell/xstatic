@@ -1,11 +1,18 @@
 Package: xstatic
 Type: Package
 Title: Builds Queries And Retrieves Data From DWP Stat-Xplore
-Version: 0.3.0
-Author: Francis Barton
-Maintainer: Francis Barton <fbarton@alwaysdata.net>
-Description: Relatively user-friendly approach to formulating queries to the Stat-Xplore API,
-    and handling the response.
+Version: 0.3.0.9000
+Authors@R: c(
+    person("Francis", "Barton", email = "fbarton@alwaysdata.net", 
+    role = c("aut", "cre"),),
+    person(
+      "Evan", "Odell", email = "evanodell91@gmail.com", 
+      role = "aut",
+      comment = c(ORCID='0000-0003-1845-808X')),
+    person("Oli", "Hawkisn", role = "aut", email = "oli@olihawkins.com")
+    )
+Description: Relatively user-friendly approach to formulating queries to 
+    the Stat-Xplore API, and handling the response.
 URL: https://github.com/francisbarton/xstatic
 License: MIT + file LICENSE
 Encoding: UTF-8
